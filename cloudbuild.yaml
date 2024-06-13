@@ -1,11 +1,11 @@
 steps:
   # 1. Build the Docker Image
   - name: 'gcr.io/cloud-builders/docker' 
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$dotted-hope-423417-m6/InfoStream/InfoStream', '.']
 
   # 2. Push the Docker Image to Artifact Registry (optional, but recommended)
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app']
+    args: ['push', 'us-central1-docker.pkg.dev/$dotted-hope-423417-m6/InfoStream/InfoStream']
 
   # 3. Deploy to Cloud Run
   - name: 'google/cloud-sdk'
@@ -13,9 +13,9 @@ steps:
     args: 
       - 'run'
       - 'deploy' 
-      - 'my-service' # Your Cloud Run service name
+      - 'InfoStream' # Your Cloud Run service name
       - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app' 
+      - 'us-central1-docker.pkg.dev/$dotted-hope-423417-m6/InfoStream/InfoStream' 
       - '--region'
       - 'us-central1' # Your Cloud Run region
       - '--platform' 
