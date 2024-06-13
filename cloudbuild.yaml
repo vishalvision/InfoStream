@@ -1,0 +1,27 @@
+steps:
+  # 1. Build the Docker Image
+  - name: 'gcr.io/cloud-builders/docker' 
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app', '.']
+
+  # 2. Push the Docker Image to Artifact Registry (optional, but recommended)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app']
+
+  # 3. Deploy to Cloud Run
+  - name: 'google/cloud-sdk'
+    entrypoint: gcloud
+    args: 
+      - 'run'
+      - 'deploy' 
+      - 'my-service' # Your Cloud Run service name
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-app' 
+      - '--region'
+      - 'us-central1' # Your Cloud Run region
+      - '--platform' 
+      - 'managed'
+      - '--allow-unauthenticated' # Allow public access to your service (optional)
+
+# Optional: Specify logs bucket behavior
+options:
+  default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
