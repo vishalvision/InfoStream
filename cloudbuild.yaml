@@ -1,8 +1,8 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'REGION-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs', '.']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'REGION-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs']
+    args: ['push', 'us-central1-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs']
   - name: 'google/cloud-sdk'
     entrypoint: gcloud
     args: 
@@ -10,9 +10,9 @@ steps:
       - 'deploy' 
       - 'infostream' 
       - '--image'
-      - 'REGION-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs'
-      - '--region'
-      - 'REGION' 
+      - 'us-central1-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs'
+      - '--us-central1'
+      - 'us-central1' 
       - '--platform' 
       - 'managed'
       - '--allow-unauthenticated' # If you want your service to be publicly accessible
