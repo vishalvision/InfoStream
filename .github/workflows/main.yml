@@ -1,118 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuwait Fire Tragedy | Vishal Vision News</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            line-height: 1.6;
-        }
+name: Deploy to Cloud Run 
 
-        header {
-            background: #35424a;
-            color: white;
-            padding: 1rem 0;
-            text-align: center;
-        }
+on:
+  push:
+    branches: [ main ] 
 
-        #main-content {
-            padding: 20px;
-        }
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-        article {
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
+    steps:
+      # 1. Check out your repository code
+      - uses: actions/checkout@v3
 
-        h1, h2, h3 {
-            color: #35424a;
-        }
+      # 2. Build the Docker image 
+      - name: Build Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: us-central1-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs
 
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 20px auto;
-        }
-
-        .sidebar {
-            float: right;
-            width: 30%;
-            padding: 20px;
-            background: #f0f0f0;
-            margin-left: 20px;
-            border-radius: 5px;
-        }
-
-        .sidebar h3 {
-            margin-top: 0;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar li {
-            margin-bottom: 10px;
-        }
-
-        footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Vishal Vision News</h1>
-        <h3>Delivering News as it Happens</h3>
-    </header>
-
-    <div id="main-content">
-        <article>
-            <h2>Devastating Fire Claims Lives of Indian Workers in Kuwait</h2>
-            <p><span class="dateline">Mangaf, Kuwait - June 13, 2024</span> - A fire ripped through a six-story building in Mangaf, Kuwait, killing at least 40 Indian nationals and injuring dozens more. The fire, which broke out early Wednesday morning, is believed to have started in a kitchen on a lower floor while residents were asleep.</p>
-
-            <img src="https://example.com/kuwait-fire-image.jpg" alt="Image of the Kuwait Fire"> 
-            <!-- Replace with an actual image URL -->
-
-            <h3>Victims and Response</h3>
-            <p>Most of the victims were low-wage laborers from Kerala, Tamil Nadu, and North Indian states. Kuwait's deputy prime minister has blamed the tragedy on the "greed" of the building and company owners, citing potential safety violations. He has ordered the arrest of those responsible.</p>
-
-            <p>The Indian government is actively involved in the response. Prime Minister Narendra Modi held an emergency meeting, and Minister of State for External Affairs Kirti Vardhan Singh is traveling to Kuwait to oversee relief efforts and coordinate the repatriation of victims. </p>
-
-            <h3>Investigation and Concerns</h3>
-            <p>Kuwaiti authorities have launched an investigation into the cause of the fire and are examining the building's safety standards. The incident has raised concerns about the living conditions of low-wage migrant workers in the Gulf region, where overcrowding and inadequate safety measures are often reported.</p> 
-
-            <h3>Further Information</h3>
-            <p>The Indian Embassy in Kuwait has set up an emergency helpline number (+965-65505246) for updates and assistance.</p>
-        </article>
-
-        <aside class="sidebar">
-            <h3>Related News</h3>
-            <ul>
-                <li><a href="#">Link to related article 1</a></li>
-                <li><a href="#">Link to related article 2</a></li>
-                <li><a href="#">Link to related article 3</a></li>
-            </ul>
-        </aside>
-    </div>
-
-    <footer>
-        <p>&copy; 2023 Vishal Vision News</p>
-    </footer>
-
-</body>
-</html>
+      # 3. Deploy to Cloud Run 
+      - name: Deploy to Cloud Run
+        uses: 'google-github-actions/deploy-cloudrun@v0'
+        with:
+          service: SERVICE_NAME
+          image: us-central1-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs
+          region: us-central1
