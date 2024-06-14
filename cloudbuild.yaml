@@ -1,27 +1,21 @@
 steps:
-  # 1. Build the Docker Image
-  - name: 'gcr.io/cloud-builders/docker' 
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$dotted-hope-423417-m6/InfoStream/InfoStream', '.']
-
-  # 2. Push the Docker Image to Artifact Registry (optional, but recommended)
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$dotted-hope-423417-m6/InfoStream/InfoStream']
-
-  # 3. Deploy to Cloud Run
+    args: ['build', '-t', 'REGION-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs', '.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'REGION-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs']
   - name: 'google/cloud-sdk'
     entrypoint: gcloud
     args: 
       - 'run'
       - 'deploy' 
-      - 'InfoStream' # Your Cloud Run service name
+      - 'infostream' 
       - '--image'
-      - 'us-central1-docker.pkg.dev/$dotted-hope-423417-m6/InfoStream/InfoStream' 
+      - 'REGION-docker.pkg.dev/dotted-hope-423417-m6/cloud-run-source-deploy/Briefs'
       - '--region'
-      - 'us-central1' # Your Cloud Run region
+      - 'REGION' 
       - '--platform' 
       - 'managed'
-      - '--allow-unauthenticated' # Allow public access to your service (optional)
+      - '--allow-unauthenticated' # If you want your service to be publicly accessible
 
-# Optional: Specify logs bucket behavior
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
